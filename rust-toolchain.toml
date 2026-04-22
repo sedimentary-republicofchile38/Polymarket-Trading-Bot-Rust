@@ -1,0 +1,12 @@
+# Pin the Rust toolchain for this repo (rustup applies it when you `cd` here).
+#
+# This workspace needs rustc >= 1.91 (alloy / transitive crates). Use `stable` so you
+# stay current; minimum that is known to compile is 1.91.0:
+#   rustup toolchain install 1.91.0
+#
+# Note: `libclob_sdk.so` errors like `GLIBC_2.38 not found` are a *system libc* mismatch.
+# rustup/Rust version does not upgrade glibc. Fix: newer OS, Docker (see Dockerfile), or a .so
+# built on your distro.
+[toolchain]
+channel = "stable"
+components = ["rustfmt", "clippy"]
